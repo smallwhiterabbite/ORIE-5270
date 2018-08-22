@@ -1,0 +1,18 @@
+Yuhan Li (yl2794)
+Topics covered today:
+1. AWS - The most important feature of aws is that it is cloud-enabled, allowing users to have access to linux system with
+   extensively larger compute capacity compared to using our own systems.
+2. Linux system - It is an operating system like windows, but Linux is programming-based that we can access and change
+   anything with codes. It is also highly securely (eg. when we type in passcodes to access Github, the password will
+   not show up). 
+3. Git and Github - Git is the command used to manage Github, an social network for computer scientists to share codes.
+   Specifically we learned the following concepts in Github:
+	a. Repository - like a file which collects all files related to a certain project and we can manage using Linux
+	b. Branch - super useful when working on a group project; teammates can work on their own codes before pushing 
+	   finalized codes into the master branch
+4. Shell - Shell is the standard command language for systems like Linux. One of its useful application is that we can use
+   sh to run existing files with functions we want (eg. we can use sh to write a loop to run same py files with different 
+   seed numbers).
+5. Python and PyCharm - We learned Python classes today. Like other object-oriented progammming languages, class collects
+   fields and methods to build object and its functionality together. We also covered data structure concepts including trees
+   and recursive functions.
