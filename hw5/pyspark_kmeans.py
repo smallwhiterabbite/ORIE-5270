@@ -13,6 +13,7 @@ def pyspark_kmeans(file1, file2):
     :param file2: Centroids file
     :return: A txt file including the centroids of each cluster
     """
+
     # load data
     data = sc.textFile(file1).map(lambda l: l.split(" ")).map(lambda l: np.array([float(x) for x in l]))
     centroids = sc.textFile(file2).map(lambda l: l.split(" "))
@@ -31,7 +32,7 @@ def pyspark_kmeans(file1, file2):
         # group by key, add all data points and counts, divide each other to get mean value
         centroids = np.array(assigned.reduceByKey(lambda x, n: (x[0] + n[0], x[1] + n[1])).sortByKey()
                              .map(lambda c: c[1][0] / c[1][1]).collect())
-        if prev_centroids == centroids:  # when already converged
+        if np.array_equal(prev_centroids, centroids):  # when already converged
             converged = True
 
     return centroids
@@ -39,6 +40,6 @@ def pyspark_kmeans(file1, file2):
 
 if __name__ == "__main__":
 
-    centroid = pyspark_kmeans("data.txt", 'c1.txt')
-    centroid.saveAsTextFile("centroids.txt")
-
+    seeds = pyspark_kmeans("data.txt", 'c1.txt')
+    np.savetxt("answer.txt", seeds)
+    sc.stop()

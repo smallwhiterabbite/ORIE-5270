@@ -14,26 +14,27 @@ def matrix_multiplication(txt_file1, txt_file2):
     :return: An RDD object of A*v
     """
     f1 = sc.textFile(txt_file1).map(lambda l: [float(x) for x in l.split(",")])
-    f2 = sc.textFile(txt_file2).map(lambda l: l.split(","))
-
-    A = f1.map(lambda l: [(l[0], (l[i], i)) for i in range(1, len(l))])
-    A = A.flatMap(lambda l: f(l))
-    v = f2.map(lambda l: [(l[0], (l[i], i)) for i in range(1, len(l))])
-    v = v.flatMap(lambda l: [(i, l[i]) for i in range(1, len(l))])
+    f2 = sc.textFile(txt_file2).map(lambda l: [float(x) for x in l.split(",")])
 
     def f(x):
         for a in x:
             yield a[1][1], (a[0], a[1][0])
 
-    Av = A.join(v)
-    Av = Av.map(lambda l: (l[1][0][0], l[1][0][1] * l[1][1]))
-    Av = Av.reduceByKey(lambda x, y: x + y)
+    A = f1.map(lambda l: [(l[0], (l[i], i - 1)) for i in range(1, len(l))])
+    A = A.flatMap(lambda l: f(l))
+    v = f2.map(lambda l: [(l[0], (l[i], i)) for i in range(len(l))])
+    v = v.flatMap(lambda l: [(i, l[i]) for i in range(len(l))])
 
-    return Av.collect()
+    Av = A.join(v)
+    print("4", Av.collect())
+    Av = Av.map(lambda l: (l[1][0][0], l[1][0][1] * l[1][1][1][0]))
+
+    Av = Av.reduceByKey(lambda x, y: x + y)
+    return Av
 
 
 if __name__ == "__main__":
 
     product = matrix_multiplication("A.txt", 'B.txt')
     product.saveAsTextFile("product.txt")
-
+    sc.stop()
